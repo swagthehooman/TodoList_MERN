@@ -1,0 +1,111 @@
+.todo-list-container{
+    width: 40%;
+}
+
+.heading{
+    display: flex;
+    justify-content: space-between;
+    margin: 0 0 2rem 0;
+}
+
+.logo{
+    font-weight: 700;
+    font-size: 3rem;
+}
+
+.theme-button{
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.task-input-box{
+    width: 100%;
+    margin-bottom: 1.2rem;
+}
+
+input{
+    width: 100%;
+    padding: 0.7rem;
+    background-color: hsl(235, 24%, 19%);
+    border: 0;
+    border-radius: 5px;
+    color:hsl(236, 33%, 92%) ;
+}
+
+input:is(:active,:focus){
+    outline: none;
+}
+
+.todo-lists{
+    border-radius: 5px;
+    padding: 0.2rem;
+    background-color: hsl(235, 24%, 19%);
+}
+
+.options-bar{
+    padding: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.options-bar>button{
+    background-color: transparent;
+    border: 0;
+    color: hsl(234, 11%, 52%);
+    cursor: pointer;
+}
+
+.options-bar>button:hover{
+    color: hsl(236, 33%, 92%);
+}
+
+.options-bar>button:is(:active,:focus){
+    color: hsl(220, 98%, 61%);
+}
+
+
+
+.job-tile{
+    padding: 0.7rem;
+    display: flex; 
+    justify-content: space-between;
+    font-size: 1.2rem;
+    background-color: hsl(235, 24%, 19%);
+    border-bottom: 1px solid hsl(233, 14%, 35%);
+
+}
+
+.completion{
+    background: linear-gradient(120deg, hsl(192, 100%, 67%) 10%,hsl(280, 87%, 65%) 100% );
+    display: flex;
+    align-items: center;
+    border-radius: 50%;
+    padding: 0.6rem;
+    border: 0;
+    cursor: pointer;
+}
+
+.unfinished{
+    border-radius: 50%;
+    padding: 0.9rem;
+    border: 1px solid hsl(234, 11%, 52%);
+    background-color: transparent;
+    cursor: pointer;
+}
+
+/* .unfinished:hover{
+    border: 1px solid transparent;
+    background: linear-gradient(120deg, hsl(192, 100%, 67%) 10%,
+        hsl(280, 87%, 65%) 100%) border-box;
+    mask:
+            linear-gradient(hsl(235, 24%, 19%) 0 0) padding-box,
+            linear-gradient(hsl(235, 24%, 19%) 0 0);
+            mask-composite: xor;
+} */
+
+.deletion{
+    background-color: transparent;
+    border: 0px;
+}
