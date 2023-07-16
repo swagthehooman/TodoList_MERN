@@ -50,21 +50,35 @@ input:is(:active,:focus){
     justify-content: space-between;
 }
 
-.options-bar>button{
+.options-bar-dark>button{
     background-color: transparent;
     border: 0;
     color: hsl(234, 11%, 52%);
     cursor: pointer;
 }
 
-.options-bar>button:hover{
+.options-bar-dark>button:hover{
     color: hsl(236, 33%, 92%);
 }
 
-.options-bar>button:is(:active,:focus){
+.options-bar-dark>button:is(:active,:focus){
     color: hsl(220, 98%, 61%);
 }
 
+.options-bar-light>button{
+    background-color: transparent;
+    border: 0;
+    color: hsl(234, 11%, 52%);
+    cursor: pointer;
+}
+
+.options-bar-light>button:hover{
+    color: hsl(235, 19%, 35%);
+}
+
+.options-bar-light>button:is(:active,:focus){
+    color: hsl(220, 98%, 61%);
+}
 
 
 .job-tile{
@@ -108,4 +122,5 @@ input:is(:active,:focus){
 .deletion{
     background-color: transparent;
     border: 0px;
+    cursor: pointer;
 }

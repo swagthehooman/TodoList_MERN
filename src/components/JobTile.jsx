@@ -1,14 +1,19 @@
 export default function JobTile({
+  id,
   completionStatus,
   task,
   handleCompletion,
   handleOnDeletion,
+  theme,
 }) {
   return (
-    <div className="job-tile">
+    <div
+      className="job-tile"
+      style={{ backgroundColor: theme ? "" : "hsl(236, 33%, 92%)" }}
+    >
       <button
         className={completionStatus ? "completion" : "unfinished"}
-        onClick={handleCompletion}
+        onClick={() => handleCompletion(id)}
       >
         {completionStatus && <img src="./images/icon-check.svg" />}
       </button>
@@ -16,12 +21,18 @@ export default function JobTile({
         className="tasks"
         style={{
           textDecoration: completionStatus ? "line-through" : "",
-          color: completionStatus ? "hsl(234, 11%, 52%)" : "hsl(236, 33%, 92%)",
+          color: theme
+            ? completionStatus
+              ? "hsl(234, 11%, 52%)"
+              : "hsl(236, 33%, 92%)"
+            : completionStatus
+            ? "hsl(236, 9%, 61%)"
+            : "hsl(235, 19%, 35%)",
         }}
       >
         {task}
       </p>
-      <button className="deletion" onClick={handleOnDeletion}>
+      <button className="deletion" onClick={() => handleOnDeletion(id)}>
         <img src="./images/icon-cross.svg" />
       </button>
     </div>
