@@ -23,6 +23,8 @@
 .task-input-box{
     width: 100%;
     margin-bottom: 1.2rem;
+    display: flex;
+    gap: 0.5rem;
 }
 
 input{
@@ -36,6 +38,13 @@ input{
 
 input:is(:active,:focus){
     outline: none;
+}
+
+.add-button{
+    cursor: pointer;
+    border: 0;
+    border-radius: 5px;
+    padding: 0.5rem;
 }
 
 .todo-lists{
@@ -80,7 +89,6 @@ input:is(:active,:focus){
 .options-bar-light>button:is(:active,:focus){
     color: hsl(220, 98%, 61%);
 }
-
 
 .job-tile{
     padding: 0.7rem;

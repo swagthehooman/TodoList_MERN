@@ -10,10 +10,12 @@ export default function TodoList({ themeChange, theme }) {
 
   //get all tasks on initial run
   useEffect(() => {
-    axios.get("http://localhost:5000/").then((response) => {
-      setTodos(response.data);
-      //console.log(response.data);
-    });
+    axios
+      .get("https://nice-tan-bighorn-sheep-tutu.cyclic.app/")
+      .then((response) => {
+        setTodos(response.data);
+        //console.log(response.data);
+      });
   }, []);
 
   //new task input
@@ -23,27 +25,30 @@ export default function TodoList({ themeChange, theme }) {
 
   //upload the new task to database and then fetch the whole list for id consistency
   function handleCreate(event) {
-    if (event.code === "Enter") {
-      axios
-        .post("http://localhost:5000/add", {
-          completionStatus: false,
-          task: newTask,
-        })
-        .then(() =>
-          axios.get("http://localhost:5000/").then((response) => {
+    axios
+      .post("https://nice-tan-bighorn-sheep-tutu.cyclic.app/add", {
+        completionStatus: false,
+        task: newTask,
+      })
+      .then(() =>
+        axios
+          .get("https://nice-tan-bighorn-sheep-tutu.cyclic.app/")
+          .then((response) => {
             setTodos(response.data);
           })
-        );
+      );
 
-      setNewTask("");
-    }
+    setNewTask("");
   }
 
   //update the task status
   function handleOnCompletion(index) {
-    axios.post("http://localhost:5000/update/" + index, {
-      completionStatus: true,
-    });
+    axios.post(
+      "https://nice-tan-bighorn-sheep-tutu.cyclic.app/update/" + index,
+      {
+        completionStatus: true,
+      }
+    );
     setTodos((prev) =>
       prev.map((item) =>
         item._id == index
@@ -59,40 +64,50 @@ export default function TodoList({ themeChange, theme }) {
 
   //delete any task as user wants
   function handleOnDeletion(index) {
-    axios.delete("http://localhost:5000/delete/" + index);
+    axios.delete(
+      "https://nice-tan-bighorn-sheep-tutu.cyclic.app/delete/" + index
+    );
     setTodos((prev) => prev.filter((item) => item._id != index));
   }
 
   //show active task count
   function handleLeftCount(event) {
-    axios.get("http://localhost:5000/").then((response) => {
-      setCountLeft((prev) => {
-        var temp = 0;
-        response.data.map((i) => !i.completionStatus && temp++);
-        return temp;
+    axios
+      .get("https://nice-tan-bighorn-sheep-tutu.cyclic.app/")
+      .then((response) => {
+        setCountLeft((prev) => {
+          var temp = 0;
+          response.data.map((i) => !i.completionStatus && temp++);
+          return temp;
+        });
       });
-    });
   }
 
   //display all tasks from database
   function handleDisplayAll(event) {
-    axios.get("http://localhost:5000/").then((response) => {
-      setTodos(response.data);
-    });
+    axios
+      .get("https://nice-tan-bighorn-sheep-tutu.cyclic.app/")
+      .then((response) => {
+        setTodos(response.data);
+      });
   }
 
   //display active tasks
   function handleDisplayActive(event) {
-    axios.get("http://localhost:5000/").then((response) => {
-      setTodos(response.data.filter((i) => !i.completionStatus));
-    });
+    axios
+      .get("https://nice-tan-bighorn-sheep-tutu.cyclic.app/")
+      .then((response) => {
+        setTodos(response.data.filter((i) => !i.completionStatus));
+      });
   }
 
   //display completed tasks which has not been deleted
   function handleDisplayCompleted(event) {
-    axios.get("http://localhost:5000/").then((response) => {
-      setTodos(response.data.filter((i) => i.completionStatus));
-    });
+    axios
+      .get("https://nice-tan-bighorn-sheep-tutu.cyclic.app/")
+      .then((response) => {
+        setTodos(response.data.filter((i) => i.completionStatus));
+      });
   }
 
   //delete all completed tasks
@@ -100,7 +115,9 @@ export default function TodoList({ themeChange, theme }) {
     todos.map(
       (i) =>
         i.completionStatus &&
-        axios.delete("http://localhost:5000/delete/" + i._id)
+        axios.delete(
+          "https://nice-tan-bighorn-sheep-tutu.cyclic.app/delete/" + i._id
+        )
     );
     setTodos((prev) => prev.filter((i) => !i.completionStatus));
   }
@@ -121,12 +138,23 @@ export default function TodoList({ themeChange, theme }) {
           onChange={handleInput}
           name="newTask"
           value={newTask}
-          onKeyDown={handleCreate}
           style={{
             backgroundColor: theme ? "" : "hsl(236, 33%, 92%)",
             color: theme ? "" : "hsl(235, 19%, 35%)",
           }}
         />
+        <button
+          className="add-button"
+          style={{
+            backgroundColor: theme
+              ? "hsl(235, 24%, 19%)"
+              : "hsl(236, 33%, 92%)",
+            color: theme ? "hsl(236, 33%, 92%)" : "hsl(235, 19%, 35%)",
+          }}
+          onClick={handleCreate}
+        >
+          Add
+        </button>
       </div>
       <div
         className="todo-lists"
@@ -149,7 +177,9 @@ export default function TodoList({ themeChange, theme }) {
             );
           })
         ) : (
-          <p>No tasks yet, add new task</p>
+          <p style={{ color: theme ? "" : "hsl(235, 19%, 35%)" }}>
+            No tasks yet, add new task
+          </p>
         )}
         <div
           className={

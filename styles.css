@@ -80,4 +80,19 @@ h6 {
 body{
   color: hsl(236, 33%, 92%);
   font-family: 'Josefin Sans', sans-serif;
+  max-height: 100vh;
+}
+
+footer{
+  position: sticky;
+  top: 100%;
+}
+
+.attribution {
+  font-size: 11px;
+  text-align: center;
+}
+
+.attribution a {
+  color: hsl(228, 45%, 44%);
 }
