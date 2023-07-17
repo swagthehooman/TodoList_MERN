@@ -16,7 +16,21 @@ export default function App() {
       style={{ backgroundColor: theme ? "" : "hsl(0, 0%, 98%)" }}
     >
       <picture className="bg-picture">
-        <img src="./images/bg-desktop-dark.jpg" />
+        <source
+          srcSet={
+            theme
+              ? "./images/bg-mobile-dark.jpg"
+              : "./images/bg-mobile-light.jpg"
+          }
+          media="(max-width:800px)"
+        />
+        <img
+          src={
+            theme
+              ? "./images/bg-desktop-dark.jpg"
+              : "./images/bg-desktop-light.jpg"
+          }
+        />
       </picture>
       <main>
         <TodoList themeChange={handleThemeChange} theme={theme} />

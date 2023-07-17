@@ -1,38 +1,55 @@
 import "./todoList.css";
-import todoList from "../../demoData";
 import JobTile from "./JobTile";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 export default function TodoList({ themeChange, theme }) {
-  const [todos, setTodos] = useState(todoList.list);
+  const [todos, setTodos] = useState([]);
   const [newTask, setNewTask] = useState("");
   const [countLeft, setCountLeft] = useState(0);
 
+  //get all tasks on initial run
+  useEffect(() => {
+    axios.get("http://localhost:5000/").then((response) => {
+      setTodos(response.data);
+      //console.log(response.data);
+    });
+  }, []);
+
+  //new task input
   function handleInput(event) {
     setNewTask(event.target.value);
   }
 
+  //upload the new task to database and then fetch the whole list for id consistency
   function handleCreate(event) {
     if (event.code === "Enter") {
-      setTodos((prev) => {
-        return prev.concat({
-          id: prev[prev.length - 1].id + 1,
+      axios
+        .post("http://localhost:5000/add", {
           completionStatus: false,
           task: newTask,
-        });
-      });
+        })
+        .then(() =>
+          axios.get("http://localhost:5000/").then((response) => {
+            setTodos(response.data);
+          })
+        );
+
       setNewTask("");
-      console.log(todos);
     }
   }
 
+  //update the task status
   function handleOnCompletion(index) {
+    axios.post("http://localhost:5000/update/" + index, {
+      completionStatus: true,
+    });
     setTodos((prev) =>
       prev.map((item) =>
-        item.id == index
+        item._id == index
           ? {
-              id: index,
-              completionStatus: !item.completionStatus,
+              _id: index,
+              completionStatus: true,
               task: item.task,
             }
           : item
@@ -40,32 +57,52 @@ export default function TodoList({ themeChange, theme }) {
     );
   }
 
+  //delete any task as user wants
   function handleOnDeletion(index) {
-    setTodos((prev) => prev.filter((item) => item.id != index));
+    axios.delete("http://localhost:5000/delete/" + index);
+    setTodos((prev) => prev.filter((item) => item._id != index));
   }
 
+  //show active task count
   function handleLeftCount(event) {
-    setCountLeft((prev) => {
-      var temp = 0;
-      todos.map((i) => !i.completionStatus && temp++);
-      return temp;
+    axios.get("http://localhost:5000/").then((response) => {
+      setCountLeft((prev) => {
+        var temp = 0;
+        response.data.map((i) => !i.completionStatus && temp++);
+        return temp;
+      });
     });
   }
 
+  //display all tasks from database
   function handleDisplayAll(event) {
-    setTodos(todoList.list);
+    axios.get("http://localhost:5000/").then((response) => {
+      setTodos(response.data);
+    });
   }
 
+  //display active tasks
   function handleDisplayActive(event) {
-    setTodos(todoList.list.filter((i) => i.completionStatus));
+    axios.get("http://localhost:5000/").then((response) => {
+      setTodos(response.data.filter((i) => !i.completionStatus));
+    });
   }
 
+  //display completed tasks which has not been deleted
   function handleDisplayCompleted(event) {
-    setTodos(todoList.list.filter((i) => i.completionStatus));
+    axios.get("http://localhost:5000/").then((response) => {
+      setTodos(response.data.filter((i) => i.completionStatus));
+    });
   }
 
+  //delete all completed tasks
   function handleDeleteCompleted(event) {
-    setTodos(todoList.list.filter((i) => !i.completionStatus));
+    todos.map(
+      (i) =>
+        i.completionStatus &&
+        axios.delete("http://localhost:5000/delete/" + i._id)
+    );
+    setTodos((prev) => prev.filter((i) => !i.completionStatus));
   }
 
   return (
@@ -85,26 +122,35 @@ export default function TodoList({ themeChange, theme }) {
           name="newTask"
           value={newTask}
           onKeyDown={handleCreate}
-          style={{ backgroundColor: theme ? "" : "hsl(236, 33%, 92%)" }}
+          style={{
+            backgroundColor: theme ? "" : "hsl(236, 33%, 92%)",
+            color: theme ? "" : "hsl(235, 19%, 35%)",
+          }}
         />
       </div>
       <div
         className="todo-lists"
-        style={{ backgroundColor: theme ? "" : "hsl(236, 33%, 92%)" }}
+        style={{
+          backgroundColor: theme ? "" : "hsl(236, 33%, 92%)",
+        }}
       >
-        {todos.map((item) => {
-          return (
-            <JobTile
-              key={item.id}
-              id={item.id}
-              completionStatus={item.completionStatus}
-              task={item.task}
-              handleCompletion={handleOnCompletion}
-              handleOnDeletion={handleOnDeletion}
-              theme={theme}
-            />
-          );
-        })}
+        {todos.length > 0 ? (
+          todos.map((item) => {
+            return (
+              <JobTile
+                key={item._id}
+                id={item._id}
+                completionStatus={item.completionStatus}
+                task={item.task}
+                handleCompletion={handleOnCompletion}
+                handleOnDeletion={handleOnDeletion}
+                theme={theme}
+              />
+            );
+          })
+        ) : (
+          <p>No tasks yet, add new task</p>
+        )}
         <div
           className={
             theme

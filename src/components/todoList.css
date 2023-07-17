@@ -42,6 +42,7 @@ input:is(:active,:focus){
     border-radius: 5px;
     padding: 0.2rem;
     background-color: hsl(235, 24%, 19%);
+    text-align: center;
 }
 
 .options-bar{
@@ -123,4 +124,10 @@ input:is(:active,:focus){
     background-color: transparent;
     border: 0px;
     cursor: pointer;
+}
+
+@media (max-width: 800px) {
+    .todo-list-container {
+        width:90%;
+    }
 }
